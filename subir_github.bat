@@ -1,10 +1,11 @@
 @echo off
+setlocal
 chcp 65001 >nul
 title Assistente de Publicacao no GitHub
 cd /d "%~dp0"
 
 echo ==============================================================================
-echo 🐙 Assistente de Publicacao do Projeto no GitHub
+echo [GITHUB] Assistente de Publicacao do Projeto no GitHub
 echo ==============================================================================
 echo.
 
@@ -51,8 +52,8 @@ echo.
 echo Se voce ainda nao criou o repositorio no GitHub:
 echo  1. Acesse: https://github.com/new
 echo  2. De um nome (Exemplo: portal-projetos)
-echo  3. Deixe Publico ou Privado (sua escolha)
-echo  4. NAO marque "Add a README" nem .gitignore (ja temos aqui)
+echo  3. Deixe Publico ou Privado
+echo  4. NAO marque "Add a README" nem .gitignore
 echo  5. Clique no botao verde "Create repository"
 echo  6. Copie o link HTTPS que termina com .git
 echo.
@@ -77,30 +78,35 @@ echo.
 
 git push -u origin main
 
-if %errorlevel% equ 0 (
-    echo.
-    echo ==============================================================================
-    echo 🎉 [SUCESSO] Projeto publicado com sucesso no GitHub!
-    echo Acesse seu repositorio em: %REPO_URL%
-    echo ==============================================================================
-    echo.
-    echo 💡 DICA: Agora voce pode publicar gratuitamente na nuvem do Streamlit:
-    echo 1. Acesse https://share.streamlit.io
-    echo 2. Conecte sua conta GitHub
-    echo 3. Selecione o repositorio e clique em "Deploy"
-    echo ==============================================================================
-) else (
-    echo.
-    echo ==============================================================================
-    echo [ATENCAO] O comando git push encontrou um problema.
-    echo.
-    echo Causas mais comuns:
-    echo  1. Voce marcou para criar README ao criar o repositorio no GitHub.
-    echo     Solucao: Tente executar: git push -u origin main --force
-    echo  2. Falha de autenticacao com sua conta do GitHub.
-    echo     Solucao: Gere um Personal Access Token no GitHub ou faca login pelo navegador.
-    echo  3. URL digitada incorretamente.
-    echo ==============================================================================
-)
+if %errorlevel% equ 0 goto SUCESSO
+goto ERRO
 
+:SUCESSO
+echo.
+echo ==============================================================================
+echo [SUCESSO] Projeto publicado com sucesso no GitHub!
+echo Acesse seu repositorio em: %REPO_URL%
+echo ==============================================================================
+echo.
+echo DICA: Agora voce pode publicar gratuitamente na nuvem do Streamlit:
+echo 1. Acesse https://share.streamlit.io
+echo 2. Conecte sua conta GitHub
+echo 3. Selecione o repositorio e clique em "Deploy"
+echo ==============================================================================
 pause
+exit /b 0
+
+:ERRO
+echo.
+echo ==============================================================================
+echo [ATENCAO] O comando git push encontrou um problema.
+echo.
+echo Causas mais comuns:
+echo  1. Voce marcou para criar README ao criar o repositorio no GitHub.
+echo     Solucao: Tente executar: git push -u origin main --force
+echo  2. Falha de autenticacao com sua conta do GitHub.
+echo     Solucao: Faca login na janela do navegador ou use um Personal Access Token.
+echo  3. URL digitada incorretamente.
+echo ==============================================================================
+pause
+exit /b 1
