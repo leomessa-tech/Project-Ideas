@@ -1,0 +1,22 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Logs e arquivos temporarios
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Pacotes ZIP locais
+portal_projetos_nuvem.zip
+
+# Configuracoes sensiveis do Streamlit (caso venha a utilizar)
+.streamlit/secrets.toml
