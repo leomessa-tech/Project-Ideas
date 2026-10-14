@@ -58,17 +58,18 @@ echo  5. Clique no botao verde "Create repository"
 echo  6. Copie o link HTTPS que termina com .git
 echo.
 echo ==============================================================================
+set "REPO_URL="
 set /p REPO_URL="Cole aqui a URL HTTPS do seu repositorio GitHub: "
 
-if "%REPO_URL%"=="" (
-    echo.
-    echo [AVISO] Nenhuma URL informada. Operacao cancelada.
-    pause
-    exit /b 1
-)
+if not defined REPO_URL goto SEM_URL
+
+:: Remover aspas caso o usuario tenha colado com aspas
+set "REPO_URL=%REPO_URL:"=%"
+
+if "%REPO_URL%"=="" goto SEM_URL
 
 :: 6. Configurar o remote origin
-git remote remove origin 2>nul
+git remote remove origin >nul 2>&1
 git remote add origin %REPO_URL%
 
 echo.
@@ -80,6 +81,12 @@ git push -u origin main
 
 if %errorlevel% equ 0 goto SUCESSO
 goto ERRO
+
+:SEM_URL
+echo.
+echo [AVISO] Nenhuma URL informada. Operacao cancelada.
+pause
+exit /b 1
 
 :SUCESSO
 echo.
